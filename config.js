@@ -37,7 +37,7 @@ module.exports = {
         // },
         {
             id: "lavalink",
-            host: 'node1.kartadharta.xyz',
+            host: 'node1.kartadharta.xyz', //perm host
             port: 3000,
             password: 'kdlavalink',
             secure: false,

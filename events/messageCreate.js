@@ -14,7 +14,7 @@ module.exports = async (client, message) => {
     } else {
       let botPerms = message.guild.members.me.permissionsIn(message.channel);
       if(!botPerms.has(PermissionsBitField.Flags.ManageMessages))
-        return message.reply(`Error: Missing Manage Messages Permission to run this command`).catch(err => { client.error(err) });
+        return message.reply(`Error: Missing Manage Messages Permission to run this command`).catch(err => { client.error(err) }); // here checking and manage permission to work as bot
       try {
         message.delete();
       } catch (e) {
