@@ -1,3 +1,5 @@
+const { PermissionsBitField } = require('discord.js');
+
 module.exports = async (client, message) => {
   let MusicDB = await client.GetMusic(message.guild.id);
   if (!MusicDB) return;
@@ -10,6 +12,9 @@ module.exports = async (client, message) => {
         message.channel.send(`Error: ${e}`);
       }
     } else {
+      let botPerms = message.guild.members.me.permissionsIn(message.channel);
+      if(!botPerms.has(PermissionsBitField.Flags.ManageMessages))
+        return message.reply(`Error: Missing Manage Messages Permission to run this command`).catch(err => { client.error(err) });
       try {
         message.delete();
       } catch (e) {

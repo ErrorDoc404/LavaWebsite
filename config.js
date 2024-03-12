@@ -37,7 +37,7 @@ module.exports = {
         // },
         {
             id: "lavalink",
-            host: '152.70.78.251',
+            host: 'node1.kartadharta.xyz',
             port: 3000,
             password: 'kdlavalink',
             secure: false,
@@ -67,6 +67,16 @@ module.exports = {
 
     stripe: {
         token: process.env.STRIPE_TOKEN
-    }
+    },
+
+    mail: {
+        host: process.env.MAIL_HOST || 'smtp.zoho.in',
+        port: 465,
+        secure: true, // Set to true if using SSL
+        auth: {
+            user: process.env.MAIL_USER,
+            pass: process.env.MAIL_KEY,
+        },
+    },
 
 };
