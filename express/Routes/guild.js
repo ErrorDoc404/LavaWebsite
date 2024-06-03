@@ -1,7 +1,8 @@
+const {PermissionsBitField} = require('discord.js');
 const client = require("../../");
 const api = require("express").Router();
 const Stats = require('../../mongoose/database/schemas/Stats');
-const { Auth, Administrator } = require("../Middlewares");
+const { Auth, Administrator, Owner } = require("../Middlewares");
 
 
 api.get('/', Auth, Administrator, async (req, res) => {
@@ -28,9 +29,6 @@ api.get('/', Auth, Administrator, async (req, res) => {
         return res.status(500).send('Internal Server Error');
     }
 });
-
-
-
 
 api.get('/:guildId', Auth, Administrator, async (req, res) => {
     try {

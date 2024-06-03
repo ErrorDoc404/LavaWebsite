@@ -77,6 +77,17 @@ api.get("/ticket", Auth, (req, res) => {
   res.sendFile(join(__dirname, "..", "webview", "ticket.html"));
 });
 
+api.get("/terms-of-service", (req, res) => {
+  req.session.returnTo = req.originalUrl;
+  res.sendFile(join(__dirname, "..", "webview", "tos.html"));
+});
+
+api.get("/privacy-policy", (req, res) => {
+  req.session.returnTo = req.originalUrl;
+  res.sendFile(join(__dirname, "..", "webview", "pp.html"));
+});
+
+
 // Serve the server/index.html file with authentication and guild validation
 api.get("/server/:id", Auth, (req, res) => {
   req.session.returnTo = req.originalUrl;

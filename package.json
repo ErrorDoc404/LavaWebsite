@@ -34,7 +34,7 @@
         "connect-mongo": "^5.0.0",
         "cors": "^2.8.5",
         "cpu-stat": "^2.0.1",
-        "discord.js": "^14.13.0",
+        "discord.js": "^14.15.3",
         "dotenv": "^16.0.3",
         "erela.js": "^2.4.0",
         "erela.js-deezer": "^1.0.7",

@@ -32,5 +32,23 @@ const Administrator = async (req, res, next) => {
   }
 };
 
+const Owner = async (req, res, next) => {
+  try{
+    const user = req.user; // Assuming user information is stored in req.user
+    const guildOwner = config.Admins;
+    if(!user) return res.status(403).send('Access denied. User not authenticated.');
 
-module.exports = { Auth, Administrator };
+    if(guildOwner.includes(user.discordId)){
+      next();
+    }else{
+      res.status(403).send('Access denied. Owner permissions required.');
+    }
+    
+  } catch(e){
+    console.error(e);
+    res.status(500).send('Internal Server Error');
+  }
+}
+
+
+module.exports = { Auth, Administrator, Owner };
