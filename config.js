@@ -44,6 +44,8 @@ module.exports = {
         }
     ],
 
+    handlers: ['events', 'erela', 'commands'],
+
     presence: {
         status: "idle", // online, idle, and dnd(invisible too but it make people think the bot is offline)
         activities: [

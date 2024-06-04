@@ -57,9 +57,7 @@ class MusicBot extends Client {
         this.Buttons = new Collection();
         this.invites = new Collection();
 
-        this.LoadEvents();
         this.LoadButtons();
-        this.LoadCommands();
 
         this.Commands.set('play', play);
 
@@ -94,122 +92,14 @@ class MusicBot extends Client {
                 const guild = client.guilds.cache.get(id);
                 if (guild) guild.shard.send(payload);
             }
-        }).on("nodeConnect", node => logger.commands(`Node ${node.options.identifier} connected`))
-            .on("nodeError", (node, error) => logger.error(`Node ${node.options.identifier} had an error: ${error.message}`))
-            .on("trackStart", async (player, track) => {
-                this.MusicPlayed++;
-                let content;
-                const guildData = await GuildConfig.findOne({ guildId: player.guild });
-                const language = require(`../language/${guildData.language}`);
-                const musicMsg = client.musicMessage[player.guild];
-                if (player.queue.length === 0) {
-                    content = ` ${language.nowPlaying} \n${track.title}.`;
-                } else {
-                    content = `\n ${language.title} \n${track.title}.\n**[ ${player.queue.length} ${language.songsInQueue} ]**`;
-                    musicMsg.edit({ content });
-                }
+        });
 
-                this.playSong(track.title, player.queue.length);
-                this.guildQueue[player.guild] = player.queue.length;
+        this.logger = logger;
 
-                const thumbnail = track.thumbnail ? track.thumbnail.replace('default', 'hqdefault') : 'https://c.tenor.com/eDVrPUBkx7AAAAAd/anime-sleepy.gif';
-                const msgEmbed = {
-                    title: track.title,
-                    color: 0xd43790,
-                    image: {
-                        url: thumbnail,
-                    },
-                    thumbnail: {
-                        url: track.thumbnail,
-                    },
-                    footer: {
-                        text: `🔊 ${language.volume}: ${player.volume}`,
-                        iconURL: `${client.user.avatarURL()}`,
-                    },
-                };
-                const playEmbed = new EmbedBuilder(msgEmbed);
+        this.config.handlers.forEach((handler) => {
+            require(`../handlers/${handler}`)(client);
+        });
 
-                // Creating stats
-                try {
-                    const statsQuery = { discordId: track.requester.id };
-                    const statsUpdate = {
-                        discordName: track.requester.username,
-                        $inc: { songsCounter: 1 },
-                    };
-                    const updateOptions = { new: true, upsert: true };
-
-                    const updatedStats = await BotStats.findOneAndUpdate(
-                        statsQuery,
-                        statsUpdate,
-                        updateOptions
-                    );
-                } catch (error) {
-                    this.error(`Error updating/creating stats: ${error}`);
-                }
-
-                playEmbed.addFields({ name: `${language.requestedBy}`, value: `${track.requester.username}`, inline: true });
-
-                if (client.skipSong[player.guild] && client.skipBy[player.guild]) {
-                    playEmbed.addFields({ name: `${language.skipBy}`, value: `${client.skipBy[player.guild].username}`, inline: true });
-                    client.skipSong[player.guild] = false;
-                    client.skipBy[player.guild] = false;
-                }
-
-                musicMsg.edit({ content, embeds: [playEmbed] });
-            })
-            .on("queueEnd", async (player) => {
-                const musicMsg = client.musicMessage[player.guild];
-                client.skipSong[player.guild] = false;
-                client.skipBy[player.guild] = false;
-                client.guildQueue[player.guild] = 0;
-
-                const guildData = await GuildConfig.findOne({ guildId: player.guild });
-                const language = require(`../language/${guildData.language}`);
-
-                const embed = {
-                    title: language.songTitle,
-                    description: `${language.songDesc}(https://discord.com/oauth2/authorize?client_id=946749028312416327&permissions=277083450689&scope=bot%20applications.commands)`,
-                    color: 0xd43790,
-                    image: {
-                        url: 'https://i.pinimg.com/originals/55/28/82/552882e7f9e8ca8ae79a9cab1f6480d6.gif',
-                    },
-                    thumbnail: {
-                        url: '',
-                    },
-                    footer: {
-                        text: `${client.user.username} Music`,
-                        iconURL: `${client.user.avatarURL()}`,
-                    },
-                };
-
-                const row = new ActionRowBuilder().addComponents([
-                    new ButtonBuilder()
-                        .setCustomId('pause')
-                        .setLabel(`${language.buttonPause}`)
-                        .setStyle(ButtonStyle.Primary),
-                    new ButtonBuilder()
-                        .setCustomId('skip')
-                        .setLabel(`${language.buttonSkip}`)
-                        .setStyle(ButtonStyle.Secondary),
-                    new ButtonBuilder()
-                        .setCustomId('clear')
-                        .setLabel(`${language.buttonClear}`)
-                        .setStyle(ButtonStyle.Secondary),
-                    new ButtonBuilder()
-                        .setCustomId('stop')
-                        .setLabel(`${language.buttonStop}`)
-                        .setStyle(ButtonStyle.Secondary),
-                    new ButtonBuilder()
-                        .setCustomId('fix')
-                        .setLabel(`${language.buttonRepair}`)
-                        .setStyle(ButtonStyle.Secondary),
-                ]);
-
-                musicMsg.edit({ content: language.title, embeds: [embed], components: [row] });
-
-                if (!client.twentyFourSeven[player.guild])
-                    player.destroy();
-            });
     }
 
     log(Text) {
@@ -228,19 +118,6 @@ class MusicBot extends Client {
         logger.playSong(song, queueLength);
     }
 
-    LoadEvents() {
-        fs.readdir('./events/', async (err, files) => {
-            if (err) return console.error(err);
-            files.forEach(file => {
-                if (!file.endsWith('.js')) return;
-                const evt = require(`../events/${file}`);
-                let evtName = file.split('.')[0];
-                this.on(evtName, evt.bind(null, this));
-                logger.events(`Loaded event '${evtName}'`);
-            });
-        });
-    }
-
     LoadButtons() {
         fs.readdir('./buttons/', async (err, files) => {
             if (err) return console.error(err);
@@ -251,24 +128,6 @@ class MusicBot extends Client {
                 this.Buttons.set(btnName, button);
                 logger.log(`Loaded button '${btnName}'`);
             });
-        });
-    }
-
-    LoadCommands() {
-        const categories = fs.readdirSync(__dirname + '/../commands/');
-        categories.filter((cat) => !cat.endsWith('.js')).forEach((cat) => {
-            const files = fs.readdirSync(__dirname + `/../commands/${cat}/`).filter((f) =>
-                f.endsWith('.js')
-            );
-            files.forEach((file) => {
-                let cmd = require(__dirname + `/../commands/${cat}/` + file);
-                if (!cmd.name || !cmd.description || !cmd.SlashCommand) {
-                    return this.warn(`unable to load command: ${file.split(".")[0]}, Reason: File doesn't had run/name/desciption`);
-                }
-                let cmdName = cmd.name.toLowerCase();
-                this.Commands.set(cmdName, cmd);
-                logger.commands(`Loaded command '${cmdName}'`);
-            })
         });
     }
 
