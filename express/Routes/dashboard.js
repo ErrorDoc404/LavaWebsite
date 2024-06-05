@@ -33,6 +33,11 @@ api.get('/stats', Auth, async (req, res) => {
         const totalCommands = await Stats.aggregate([{ $group: { _id: null, total: { $sum: "$commandsCounter" } } }]);
         const totalCommandsCount = totalCommands.length > 0 ? totalCommands[0].total : 0;
 
+        // get total guild member counts
+        const guildMemberCount = client.guilds.cache.reduce((total, guild) => total + guild.memberCount, 0);
+
+        console.log(guildMemberCount);
+
         // Prepare the JSON response
         const responseData = {
             userSongs: userStats.songsCounter,
@@ -40,6 +45,7 @@ api.get('/stats', Auth, async (req, res) => {
             userSongsPercentage: (userStats.songsCounter / totalSongsCount) * 100,
             userCommands: userStats.commandsCounter,
             totalCommands: totalCommandsCount,
+            totalUsers: guildMemberCount,
             userCommandsPercentage: (userStats.commandsCounter / totalCommandsCount) * 100
         };
 

@@ -16,25 +16,33 @@ module.exports = {
             {
                 name: "music",
                 description: "type a music or provice a link",
-                type: 3, // String type
+                type: 3, // String type 
                 required: true,
             },
         ],
 
         run: async (client, interaction, args, { MusicDB }) => {
+
+            if (MusicDB.musicChannelId === null || MusicDB.musicChannelId === undefined || MusicDB.musicChannelId === '') {
+                console.log('MusicDB.musicChannelId is null, undefined, or empty.');
+                return interaction.reply(`Please set up the bot in the channel where you use the **/setup** command.`);
+            } else {
+                console.log('MusicDB.musicChannelId is valid:', MusicDB.musicChannelId);
+            }
+
             const interactionChannelId = interaction.channel.id.trim();
             const setupChannelId = MusicDB.musicChannelId.trim();
 
-            if (interactionChannelId !== setupChannelId) return interaction.reply(`Please Use command is setuped channel`);
+            if (interactionChannelId !== setupChannelId) return interaction.reply(`Please Use command is setuped channel`).catch(err => { client.error(err) });;
 
             // Check if the user is in a voice channel
-            if (!interaction.member.voice.channel) return interaction.reply(`❌ | **You must be in a voice channel to play something!**`);
+            if (!interaction.member.voice.channel) return interaction.reply(`❌ | **You must be in a voice channel to play something!**`).catch(err => { client.error(err) });;
 
             let searchString = args.value;
             let checkNode = client.manager.nodes.get(client.config.lavalink[0].host);
 
             // Check if the Lavalink node is connected
-            if (!checkNode || !checkNode.connected) return interaction.reply(`❌ | **Lavalink node not connected**`);
+            if (!checkNode || !checkNode.connected) return interaction.reply(`❌ | **Lavalink node not connected**`).catch(err => { client.error(err) });;
 
 
 
@@ -63,15 +71,15 @@ module.exports = {
                 });
             }
 
-            if (!player) return interaction.reply(`❌ | **Nothing is playing right now...**`);
-            if (player.playing && player.voiceChannel !== interaction.member.voice.channel.id) return interaction.reply(`❌ | **You must be in the same voice channel as me to play something!**`);
+            if (!player) return interaction.reply(`❌ | **Nothing is playing right now...**`).catch(err => { client.error(err) });;
+            if (player.playing && player.voiceChannel !== interaction.member.voice.channel.id) return interaction.reply(`❌ | **You must be in the same voice channel as me to play something!**`).catch(err => { client.error(err) });;
 
             try {
                 if (player.state !== "CONNECTED") await player.connect();
 
                 let searched = await client.manager.search(searchString, interaction.user);
 
-                if (searched.loadType === "NO_MATCHES") return interaction.reply(`**No matches found for -** ${searchString}`);
+                if (searched.loadType === "NO_MATCHES") return interaction.reply(`**No matches found for -** ${searchString}`).catch(err => { client.error(err) });
                 else if (searched.loadType === "PLAYLIST_LOADED") {
                     player.queue.add(searched.tracks);
                     if (!player.playing && !player.paused && player.queue.totalSize === searched.tracks.length) player.play();
@@ -90,9 +98,9 @@ module.exports = {
                     client.musicMessage[interaction.guildId].edit({ content: content });
                 }
 
-                interaction.reply(`**Music added to queue**`);
+                interaction.reply(`**Music added to queue**`).catch(err => { client.error(err) });
             } catch (e) {
-                interaction.reply(`**No matches found for -** ${searchString} with ${e}`);
+                interaction.reply(`**No matches found for -** ${searchString} with ${e}`).catch(err => { client.error(err) });
             }
 
 

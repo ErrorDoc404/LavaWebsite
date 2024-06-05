@@ -19,8 +19,7 @@ api.get('/', Auth, async (req, res) => {
             return {
                 id: guild.id,
                 name: guild.name,
-                memberCount: guild.memberCount,
-                member: guild.members.cache,
+                memberCount: guild.memberCount
             };
         });
 
