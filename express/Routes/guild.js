@@ -5,7 +5,7 @@ const Stats = require('../../mongoose/database/schemas/Stats');
 const { Auth, Administrator, Owner } = require("../Middlewares");
 
 
-api.get('/', Auth, Administrator, async (req, res) => {
+api.get('/', Auth, async (req, res) => {
     try {
         const ownerIds = client.config.Admins;
         const requesterId = req.user ? req.user.discordId : null;
@@ -19,7 +19,8 @@ api.get('/', Auth, Administrator, async (req, res) => {
             return {
                 id: guild.id,
                 name: guild.name,
-                memberCount: guild.memberCount
+                memberCount: guild.memberCount,
+                member: guild.members.cache,
             };
         });
 

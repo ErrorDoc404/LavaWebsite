@@ -20,8 +20,8 @@ module.exports = async (client, message) => {
       } catch (e) {
         message.channel.send(`Error: ${e}`);
       }
-      const play = client.Commands.get('play');
-      play.run(client, message, { MusicDB });
+
+      message.channel.send(`Please use **/play** command to play music`);
     }
     // const msg = await message.channel.messages.fetch(MusicDB.musicMessageId);
   }
