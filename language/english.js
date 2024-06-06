@@ -23,5 +23,6 @@ module.exports = {
     songsInQueue: 'Songs in Queue',
     songTitle: '🎵 Vibing Music 🎵',
     stopMusic: '✅ | Music Stopped',
-    title: '**[ Nothing Playing ]**'
+    title: '**[ Nothing Playing ]**',
+    volume: 'Volume'
 };
