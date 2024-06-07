@@ -29,8 +29,6 @@ module.exports = async (client, oldState, newState) => {
                 console.log(`Welcome back user will start playing again for you.`);
             }
         }
-
-        console.log(countMember);
     }
     catch (e) {
         console.error(`Error: ${e}`);
