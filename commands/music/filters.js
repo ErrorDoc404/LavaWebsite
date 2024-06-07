@@ -1,4 +1,4 @@
-const { } = require('discord.js');
+const { EmbedBuilder } = require('discord.js');
 
 module.exports = {
     name: 'filters',
@@ -10,7 +10,7 @@ module.exports = {
     },
     aliases: [],
     category: "music",
-    premium: true,
+    premium: false,
     SlashCommand: {
         options: [
             {
@@ -42,7 +42,64 @@ module.exports = {
          * @param {*} param3
          */
         run: async (client, interaction, args, { MusicDB }) => {
-            //some code
+            const guild = client.guilds.cache.get(interaction.guildId);
+            const member = guild.members.cache.get(interaction.member.user.id);
+            let player = await client.manager.get(interaction.guildId);
+            if (!player) return interaction.reply({ content: `❌ | **Nothing in queue to skip**` }).catch(err => { client.error(err) });
+
+            if (!member.voice.channel) return interaction.reply({ content: `❌ | **You must be in a voice channel to use this command.**` }).catch(err => { client.error(err) });
+
+            let filtersEmbed = new EmbedBuilder()
+
+            if (args.value == "nightcore") {
+                filtersEmbed.setDescription(`✅ | Nighcore filter is now activat!`);
+                player.nightcore = true;
+            }
+            else if (args.value == "bassboost") {
+                filtersEmbed.setDescription(`✅ | Bassboost filter is now activat!`);
+                player.bassboost = true;
+            }
+            else if (args.value == "vaporwave") {
+                filtersEmbed.setDescription(`✅ | Vaporwave filter is now activat!`);
+                player.vaporwave = true;
+            }
+            else if (args.value == "pop") {
+                filtersEmbed.setDescription(`✅ | Pop filter is now activat!`);
+                player.pop = true;
+            }
+            else if (args.value == "soft") {
+                filtersEmbed.setDescription(`✅ | Soft filter is now activat!`);
+                player.soft = true;
+            }
+            else if (args.value == "treblebass") {
+                filtersEmbed.setDescription(`✅ | Treblebass filter is now activat!`);
+                player.treblebass = true;
+            }
+            else if (args.value == "off") {
+                filtersEmbed.setDescription(`✅ | Filter are reset!`);
+                player.reset();
+            }
+            else if (args.value == "eightD") {
+                filtersEmbed.setDescription(`✅ | Eight Dimension filter is now activat!`);
+                player.eightD = true;
+            }
+            else if (args.value == "karaoke") {
+                filtersEmbed.setDescription(`✅ | Karaoke filter is now activat!`);
+                player.karaoke = true;
+            }
+            else if (args.value == "vibrato") {
+                filtersEmbed.setDescription(`✅ | Vibrato filter is now activat!`);
+                player.vibrato = true;
+            }
+            else if (args.value == "tremolo") {
+                filtersEmbed.setDescription(`✅ | Tremolo filter is now activat!`);
+                player.tremolo = true;
+            }
+            else {
+                filtersEmbed.setDescription(`❌ | Invalid filter!`);
+            }
+
+            return interaction.reply({ embeds: [filtersEmbed] }).catch(err => { client.error(err) });
         },
     },
 }

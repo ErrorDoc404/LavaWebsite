@@ -33,16 +33,16 @@ module.exports = {
             const interactionChannelId = interaction.channel.id.trim();
             const setupChannelId = MusicDB.musicChannelId.trim();
 
-            if (interactionChannelId !== setupChannelId) return interaction.reply(`Please Use command is setuped channel`).catch(err => { client.error(err) });;
+            if (interactionChannelId !== setupChannelId) return interaction.reply(`Please Use command is setuped channel`).catch(err => { client.error(err) });
 
             // Check if the user is in a voice channel
-            if (!interaction.member.voice.channel) return interaction.reply(`❌ | **You must be in a voice channel to play something!**`).catch(err => { client.error(err) });;
+            if (!interaction.member.voice.channel) return interaction.reply(`❌ | **You must be in a voice channel to play something!**`).catch(err => { client.error(err) });
 
             let searchString = args.value;
             let checkNode = client.manager.nodes.get(client.config.lavalink[0].host);
 
             // Check if the Lavalink node is connected
-            if (!checkNode || !checkNode.connected) return interaction.reply(`❌ | **Lavalink node not connected**`).catch(err => { client.error(err) });;
+            if (!checkNode || !checkNode.connected) return interaction.reply(`❌ | **Lavalink node not connected**`).catch(err => { client.error(err) });
 
 
 

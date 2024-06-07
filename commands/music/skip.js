@@ -1,3 +1,5 @@
+const { PermissionsBitField } = require("discord.js");
+
 module.exports = {
     name: 'skip',
     description: 'Skip the current song',
@@ -16,7 +18,7 @@ module.exports = {
             let player = await client.manager.get(interaction.guildId);
             if (!player) return interaction.reply({ content: `❌ | **Nothing in queue to skip**` }).catch(err => { client.error(err) });
             let song = player.queue.current;
-            if (member.user === song.requester) {
+            if (member.user === song.requester || interaction.member.permissions.has(PermissionsBitField.Flags.Administrator)) {
                 if (!member.voice.channel) return client.sendTime(interaction, "❌ | **You must be in a voice channel to use this command.**");
                 player.stop();
                 client.skipSong[interaction.guildId] = true;

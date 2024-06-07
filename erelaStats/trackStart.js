@@ -3,6 +3,7 @@ const BotStats = require("../mongoose/database/schemas/Stats");
 const { EmbedBuilder } = require('discord.js');
 
 module.exports.run = async (client, player, track) => {
+    if (player.get("autoPause") || player.get("autoPause") === false) player.set("autoPause", true);
     client.MusicPlayed++;
     let content;
     const guildData = await GuildConfig.findOne({ guildId: player.guild });
