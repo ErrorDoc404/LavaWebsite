@@ -30,10 +30,17 @@ module.exports = {
          * @param {*} param3
          */
         run: async (client, interaction, args, { MusicDB }) => {
-            if (!interaction.member.permissions.has(PermissionsBitField.Flags.Administrator)) return interaction.reply(`you dont have manage guild permission to run this command`).catch(err => { client.error(err) });
+            if (!interaction.member.permissions.has(PermissionsBitField.Flags.Administrator)) {
+                return interaction.reply(`You don't have the "Manage Guild" permission to run this command.`)
+                    .catch(err => {
+                        client.error(err);
+                    });
+            }
+
             const user = args.user;
-            if (!interaction.user.id == '456130838183280651' || !interaction.user.id == '963655683658629150')
-                return interaction.reply('You dont have permission to authorize tokens');
+            if (interaction.user.id !== '456130838183280651' && interaction.user.id !== '963655683658629150') {
+                return interaction.reply('You do not have permission to authorize tokens.');
+            }
 
             var tempToken = GenerateToken.generate(28, '-', 4);
 
@@ -42,7 +49,11 @@ module.exports = {
                 token: tempToken,
             });
 
-            return interaction.reply(`Token is provided to ${user.username}`).catch(err => { client.error(err) });
+            return interaction.reply(`Token has been provided to ${user.username}`)
+                .catch(err => {
+                    client.error(err);
+                });
+
         },
     },
 };
