@@ -10,7 +10,7 @@ module.exports = {
     },
     aliases: [],
     category: "music",
-    premium: false,
+    premium: true,
     SlashCommand: {
         run: async (client, interaction) => {
             await interaction.deferReply({ ephemeral: false });

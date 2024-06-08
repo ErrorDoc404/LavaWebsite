@@ -4,7 +4,7 @@ const { ActivityType } = require("discord.js");
 module.exports = {
     Id: process.env.Discord_ClientID,
     prefix: process.env.PREFIX || '!',
-    Admins: ['456130838183280651', '963655683658629150'],
+    Admins: ['456130838183280651', '963655683658629150', '576504515541467145'],
     buildToken: process.env.BUILD_TOKEN || 'build token',
     Token: process.env.TOKEN || 'bot token',
     ExpressServer: true,

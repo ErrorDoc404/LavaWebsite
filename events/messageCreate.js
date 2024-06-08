@@ -7,7 +7,7 @@ module.exports = async (client, message) => {
   if (message.channel.id == MusicDB.musicChannelId) {
     if (message.author.bot) {
       try {
-        setTimeout(() => message.delete(), 3000);
+        setTimeout(() => message.delete().catch(err => { client.error(err) }), 3000);
       } catch (e) {
         message.channel.send(`Error: ${e}`);
       }
@@ -16,12 +16,12 @@ module.exports = async (client, message) => {
       if(!botPerms.has(PermissionsBitField.Flags.ManageMessages))
         return message.reply(`Error: Missing Manage Messages Permission to run this command`).catch(err => { client.error(err) }); // here checking and manage permission to work as bot
       try {
-        message.delete();
+        message.delete().catch(err => { client.error(err) });
       } catch (e) {
         message.channel.send(`Error: ${e}`);
       }
-      const play = client.Commands.get('play');
-      play.run(client, message, { MusicDB });
+
+      message.channel.send(`Please use **/play** command to play music`);
     }
     // const msg = await message.channel.messages.fetch(MusicDB.musicMessageId);
   }

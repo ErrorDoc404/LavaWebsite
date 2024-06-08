@@ -180,60 +180,33 @@
                         <div class="col-md-12 grid-margin">
                             <div class="row">
                                 <div class="col-12 col-xl-8 mb-4 mb-xl-0">
-                                    <h3 class="font-weight-bold">All Karta Dharta Users</h3>
+                                    <h3 class="font-weight-bold">All Servers</h3>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-md-12 grid-margin transparent">
-                            <div class="row" v-for="member in guildUsers" :key="member.id">
-                                <div class="col-md-3 mb-4 stretch-card transparent">
-                                    <div :class="['card', cardClassByLevel(member.level)]">
-                                        <div class="card-body">
-                                            <p class="mb-4">Name</p>
-                                            <p class="fs-30 mb-2">
-                                                <img :src="member.avatarUrl" alt="profile" class="user-profile" />
-                                                {{ member.username }}
-                                            </p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-3 mb-4 stretch-card transparent">
-                                    <div :class="['card', cardClassByLevel(member.level)]">
-                                        <div class="card-body">
-                                            <p class="mb-4">Higest Role</p>
-                                            <p class="fs-30 mb-2">{{member.roles[0].name}}</p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-3 mb-4 stretch-card transparent">
-                                    <div :class="['card', cardClassByLevel(member.level)]">
-                                        <div class="card-body">
-                                            <p class="mb-4">Authority Level</p>
-                                            <p class="fs-30 mb-2">Level: {{ member.level }}</p>
-                                            <button
-                                                v-if="member.level === 0 && !member.roles.includes('1051662258373136471') && member.songsCounter >= 100"
-                                                class="btn btn-success btn-sm"
-                                                @click="upgradeLevel(member.id, 1)">Upgrade to Level 1</button>
-
-                                            <button
-                                                v-else-if="member.level === 1 && !member.roles.includes('1051662275158741043') && member.songsCounter >= 200"
-                                                class="btn btn-success btn-sm"
-                                                @click="upgradeLevel(member.id, 2)">Upgrade to Level 2</button>
-
-                                            <button
-                                                v-else-if="member.level === 2 && !member.roles.includes('1051664084774424686') && member.songsCounter >= 300"
-                                                class="btn btn-success btn-sm"
-                                                @click="upgradeLevel(member.id, 3)">Upgrade to Level 3</button>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-3 mb-4 stretch-card transparent">
-                                    <div :class="['card', cardClassByLevel(member.level)]">
-                                        <div class=" card-body">
-                                            <p class="mb-4">Songs Played</p>
-                                            <p class="fs-30 mb-2">{{ member.songsCounter }}</p>
+                        <div class="col-md-12 grid-margin stretch-card">
+                            <div class="card">
+                                <div class="card-body">
+                                    <p class="card-title">Advanced Table</p>
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <div class="table-responsive">
+                                                <table id="guildData" class="display expandable-table" style="width:100%">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Icon Url</th>
+                                                            <th>Guild Id</th>
+                                                            <th>Name</th>
+                                                            <th>Member Count</th>
+                                                            <th>owner</th>
+                                                            <th>config</th>
+                                                            <th></th>
+                                                        </tr>
+                                                    </thead>
+                                                </table>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -278,11 +251,12 @@
     <script src="backend/js/todolist.js"></script>
     <!-- endinject -->
     <!-- Custom js for this page-->
-    <script src="backend/js/dashboard.js"></script>
+    <script src="backend/js/user.js"></script>
     <script src="backend/js/Chart.roundedBarCharts.js"></script>
     <!-- End custom js for this page-->
+    <script>
 
-    <script src="vue/user.js"></script>
+    </script>
 </body>
 
 </html>

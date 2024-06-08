@@ -2,7 +2,6 @@ const { Client, GatewayIntentBits, Partials, Collection, EmbedBuilder, ActionRow
 const ConfigFetcher = require('../config');
 const { Server } = require("socket.io");
 const http = require("http");
-const play = require('../music/play.js');
 const fs = require('fs');
 const Express = require("express");
 const Logger = require("./Logger");
@@ -29,10 +28,10 @@ class MusicBot extends Client {
             intents: [
                 GatewayIntentBits.Guilds,
                 GatewayIntentBits.GuildInvites,
-                GatewayIntentBits.GuildMembers,
+                // GatewayIntentBits.GuildMembers,
                 GatewayIntentBits.GuildVoiceStates,
                 GatewayIntentBits.GuildMessages,
-                GatewayIntentBits.MessageContent,
+                // GatewayIntentBits.MessageContent,
             ],
         }
 
@@ -43,6 +42,7 @@ class MusicBot extends Client {
         this.config = ConfigFetcher;
 
         this.musicMessage = [];
+        this.language = [];
 
         this.skipSong = [];
         this.skipBy = [];
@@ -58,8 +58,6 @@ class MusicBot extends Client {
         this.invites = new Collection();
 
         this.LoadButtons();
-
-        this.Commands.set('play', play);
 
         var client = this;
 

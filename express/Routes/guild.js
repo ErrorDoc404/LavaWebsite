@@ -2,10 +2,11 @@ const {PermissionsBitField} = require('discord.js');
 const client = require("../../");
 const api = require("express").Router();
 const Stats = require('../../mongoose/database/schemas/Stats');
+const GuildConfig = require("../../mongoose/database/schemas/GuildConfig")
 const { Auth, Administrator, Owner } = require("../Middlewares");
 
 
-api.get('/', Auth, Administrator, async (req, res) => {
+api.get('/', Auth, async (req, res) => {
     try {
         const ownerIds = client.config.Admins;
         const requesterId = req.user ? req.user.discordId : null;
@@ -15,13 +16,18 @@ api.get('/', Auth, Administrator, async (req, res) => {
         }
 
         // Get an array of all the guilds your bot is in
-        const botGuilds = client.guilds.cache.map(guild => {
+        const botGuilds = await Promise.all(client.guilds.cache.map(async (guild) => {
+            var config = await GuildConfig.findOne({ guildId: guild.id });
+
             return {
                 id: guild.id,
                 name: guild.name,
-                memberCount: guild.memberCount
+                memberCount: guild.memberCount,
+                iconUrl: guild.iconURL(),
+                owner: guild.ownerId === requesterId,
+                config: config
             };
-        });
+        }));
 
         res.send({ botGuilds });
     } catch (error) {

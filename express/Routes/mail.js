@@ -8,6 +8,7 @@ const smtpConfig = client.config.mail;
 const transporter = nodemailer.createTransport(smtpConfig);
 
 api.post('/contact-us', async (req, res) => {
+    return res.status(200).json({ message: `Disable for some reason` });
     try {
         const { subject, message } = req.body;
 
