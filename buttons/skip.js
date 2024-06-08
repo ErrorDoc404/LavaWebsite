@@ -1,4 +1,4 @@
-const { MessageEmbed } = require('discord.js');
+const { EmbedBuilder, PermissionsBitField } = require('discord.js');
 
 module.exports = {
   name: 'skip',
@@ -9,7 +9,7 @@ module.exports = {
     let player = await client.manager.get(interaction.guildId);
     if (!player) return interaction.reply({ content: `${language.nothingInQueue}` }).catch(err => { client.error(err) });
     let song = player.queue.current;
-    if (member.user === song.requester) {
+    if (member.user === song.requester || interaction.member.permissions.has(PermissionsBitField.Flags.Administrator)) {
       if (!member.voice.channel) return interaction.reply({ content: `${language.notInVoiceChannel}`}).catch(err => { client.error(err) });
       player.stop();
       client.skipSong[interaction.guildId] = true;
