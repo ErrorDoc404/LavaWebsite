@@ -33,6 +33,8 @@ module.exports = {
             const interactionChannelId = interaction.channel.id.trim();
             const setupChannelId = MusicDB.musicChannelId.trim();
 
+            client.language[interaction.guildId] = MusicDB.language;
+
             if (interactionChannelId !== setupChannelId) return interaction.reply(`Please Use command is setuped channel`).catch(err => { client.error(err) });
 
             // Check if the user is in a voice channel

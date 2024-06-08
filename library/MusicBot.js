@@ -42,6 +42,7 @@ class MusicBot extends Client {
         this.config = ConfigFetcher;
 
         this.musicMessage = [];
+        this.language = [];
 
         this.skipSong = [];
         this.skipBy = [];
