@@ -28,9 +28,8 @@ module.exports = async (client, oldState, newState) => {
 
         if (countMember === 1 && state === 'old') {
             var language = require(`../language/${client.language[oldState.guild.id]}`);
-            if (player && !player.paused) {
+            if (player && !player.paused && player.queue.current) {
                 player.pause(true);
-                console.log(`Music paused because the user is alone in the voice channel.`);
                 client.musicMessage[oldState.guild.id].channel.send(`Music Have been Pause due to alone in channel`);
 
                 const row = new ActionRowBuilder().addComponents([
@@ -64,7 +63,7 @@ module.exports = async (client, oldState, newState) => {
         //     var language = require(`../language/${client.language[newState.guild.id]}`);
         //     if (player && player.paused) {
         //         player.pause(false);
-        //         console.log(`Welcome back user, music will start playing again.`);
+
         //         const row = new ActionRowBuilder().addComponents([
         //             new ButtonBuilder()
         //                 .setCustomId('play')
