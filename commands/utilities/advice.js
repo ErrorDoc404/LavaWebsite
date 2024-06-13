@@ -1,4 +1,5 @@
-const random = require("something-random-on-discord").Random;
+const axios = require("axios");
+const userAgents = require('../../structure/user-agent.json')
 const { EmbedBuilder } = require('discord.js');
 
 module.exports = {
@@ -11,7 +12,7 @@ module.exports = {
   },
   aliases: [],
   category: "utilities",
-  premium: false,
+  premium: true,
   SlashCommand: {
     /**
    *
@@ -21,7 +22,20 @@ module.exports = {
    * @param {*} param3
    */
     run: async (client, interaction) => {
-      let data = await random.getAdvice();
+      let json = await axios("https://api.adviceslip.com/advice", {
+        headers: {
+          "User-Agent": userAgents[Math.floor(Math.random() * userAgents.length)]
+        }
+      });
+
+      json = json.data;
+      if (!json) console.error(`Error 01: Unable to access the json content of API`);
+
+      var data = [];
+
+      data.embed = { description: json.slip.advice, color: "RANDOM" };
+
+
       data = data.embed;
       const embed = new EmbedBuilder(data);
       embed.setColor(0x0099FF);

@@ -9,6 +9,7 @@ module.exports = {
     let player = await client.manager.get(interaction.guildId);
     if (!player) return interaction.reply({ content: `${language.nothingInQueue}` }).catch(err => { client.error(err) });
     let song = player.queue.current;
+    if (!song) return interaction.reply({ content: `❌ | **Nothing in queue to skip**` }).catch(err => { client.error(err) });
     if (member.user === song.requester || interaction.member.permissions.has(PermissionsBitField.Flags.Administrator)) {
       if (!member.voice.channel) return interaction.reply({ content: `${language.notInVoiceChannel}`}).catch(err => { client.error(err) });
       player.stop();

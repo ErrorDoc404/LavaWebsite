@@ -18,6 +18,7 @@ module.exports = {
             let player = await client.manager.get(interaction.guildId);
             if (!player) return interaction.reply({ content: `❌ | **Nothing in queue to skip**` }).catch(err => { client.error(err) });
             let song = player.queue.current;
+            if (!song) return interaction.reply({ content: `❌ | **Nothing in queue to skip**` }).catch(err => { client.error(err) });
             if (member.user === song.requester || interaction.member.permissions.has(PermissionsBitField.Flags.Administrator)) {
                 if (!member.voice.channel) return client.sendTime(interaction, "❌ | **You must be in a voice channel to use this command.**");
                 player.stop();

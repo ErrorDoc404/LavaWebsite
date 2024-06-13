@@ -32,7 +32,7 @@ module.exports = async (client, oldState, newState) => {
                 player.pause(true);
                 client.musicMessage[oldState.guild.id].channel.send(`Music Have been Pause due to alone in channel`);
 
-                const row = new ActionRowBuilder().addComponents([
+                const row1 = new ActionRowBuilder().addComponents([
                     new ButtonBuilder()
                         .setCustomId('play')
                         .setLabel(`${language.buttonPlay}`)
@@ -44,7 +44,7 @@ module.exports = async (client, oldState, newState) => {
                     new ButtonBuilder()
                         .setCustomId('clear')
                         .setLabel(`${language.buttonClear}`)
-                        .setStyle(ButtonStyle.Secondary),
+                        .setStyle(ButtonStyle.Danger),
                     new ButtonBuilder()
                         .setCustomId('stop')
                         .setLabel(`${language.buttonStop}`)
@@ -55,7 +55,30 @@ module.exports = async (client, oldState, newState) => {
                         .setStyle(ButtonStyle.Secondary),
                 ]);
 
-                client.musicMessage[oldState.guild.id].edit({ components: [row] });
+                const row2 = new ActionRowBuilder().addComponents([
+                    new ButtonBuilder()
+                        .setCustomId('shuffle')
+                        .setLabel(`${language.buttonShuffle}`)
+                        .setStyle(ButtonStyle.Secondary),
+                    new ButtonBuilder()
+                        .setCustomId('grab')
+                        .setLabel(`${language.buttonGrab}`)
+                        .setStyle(ButtonStyle.Secondary),
+                    new ButtonBuilder()
+                        .setCustomId('playlist')
+                        .setLabel(`${language.buttonPlaylist}`)
+                        .setStyle(ButtonStyle.Secondary),
+                    new ButtonBuilder()
+                        .setCustomId('loop')
+                        .setLabel(`${language.buttonLoop}`)
+                        .setStyle(ButtonStyle.Secondary),
+                    new ButtonBuilder()
+                        .setCustomId('nowplaying')
+                        .setLabel(`${language.buttonNowPlaying}`)
+                        .setStyle(ButtonStyle.Secondary),
+                ]);
+
+                client.musicMessage[oldState.guild.id].edit({ components: [row1, row2] });
             }
         }
 

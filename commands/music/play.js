@@ -1,3 +1,4 @@
+const { PermissionFlagsBits, PermissionsBitField } = require("discord.js");
 const GuildConfig = require("../../mongoose/database/schemas/GuildConfig");
 
 module.exports = {
@@ -52,9 +53,20 @@ module.exports = {
             client.twentyFourSeven[interaction.guildId] = GuildData.twentyFourSeven;
 
             // Fetch the music message from the database
-            client.musicMessage[interaction.guildId] = await interaction.channel.messages.fetch(MusicDB.musicMessageId);
+            try {
+                client.musicMessage[interaction.guildId] = await interaction.channel.messages.fetch(MusicDB.musicMessageId);
+            } catch (e) {
+                return interaction.reply(`❌ | **Seems Player Controller have been destroyed. Please kindly Resetup**`).catch(err => { client.error(err) });
+            }
 
             let player = client.manager.get(interaction.guildId);
+
+            if (!interaction.guild.members.me.permissionsIn(interaction.member.voice.channel).has(PermissionsBitField.Flags.Connect)) {
+                return interaction.reply(`❌ | **I don't have enough permissions to join your voice channel!**`).catch(err => { client.error(err) });
+            }
+            else if (!interaction.guild.members.me.permissionsIn(interaction.member.voice.channel).has(PermissionsBitField.Flags.Speak)) {
+                return interaction.reply(`❌ | **I don't have enough permissions to speak in your voice channel!**`).catch(err => { client.error(err) });
+            }
 
             if (player && (!player.playing && player.voiceChannel !== interaction.member.voice.channel.id)) {
                 // If bot is not playing and voice channel is different, destroy the player and create a new one

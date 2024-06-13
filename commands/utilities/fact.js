@@ -1,4 +1,4 @@
-const random = require("something-random-on-discord").Random;
+const axios = require("axios")
 const { EmbedBuilder } = require('discord.js');
 
 module.exports = {
@@ -11,7 +11,7 @@ module.exports = {
   },
   aliases: [],
   category: "utilities",
-  premium: false,
+  premium: true,
   SlashCommand: {
     /**
    *

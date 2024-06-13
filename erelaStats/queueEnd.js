@@ -12,7 +12,7 @@ module.exports.run = async (client, player) => {
 
     const embed = {
         title: language.songTitle,
-        description: `${language.songDesc}(https://discord.com/oauth2/authorize?client_id=946749028312416327&permissions=277083450689&scope=bot%20applications.commands)`,
+        description: `Welcome to Version 3 - the Lava Cod Update Extravaganza, where every letter of the alphabet ignites innovation and sets sail for new horizons!\n\n Please Join our Discord [Invite Link](https://discord.gg/jQaMbSSJtV)`,
         color: 0xd43790,
         image: {
             url: 'https://i.pinimg.com/originals/55/28/82/552882e7f9e8ca8ae79a9cab1f6480d6.gif',
@@ -26,7 +26,7 @@ module.exports.run = async (client, player) => {
         },
     };
 
-    const row = new ActionRowBuilder().addComponents([
+    const row1 = new ActionRowBuilder().addComponents([
         new ButtonBuilder()
             .setCustomId('pause')
             .setLabel(`${language.buttonPause}`)
@@ -38,7 +38,7 @@ module.exports.run = async (client, player) => {
         new ButtonBuilder()
             .setCustomId('clear')
             .setLabel(`${language.buttonClear}`)
-            .setStyle(ButtonStyle.Secondary),
+            .setStyle(ButtonStyle.Danger),
         new ButtonBuilder()
             .setCustomId('stop')
             .setLabel(`${language.buttonStop}`)
@@ -49,7 +49,34 @@ module.exports.run = async (client, player) => {
             .setStyle(ButtonStyle.Secondary),
     ]);
 
-    musicMsg.edit({ content: language.title, embeds: [embed], components: [row] });
+    const row2 = new ActionRowBuilder().addComponents([
+        new ButtonBuilder()
+            .setCustomId('shuffle')
+            .setLabel(`${language.buttonShuffle}`)
+            .setStyle(ButtonStyle.Secondary),
+        new ButtonBuilder()
+            .setCustomId('grab')
+            .setLabel(`${language.buttonGrab}`)
+            .setStyle(ButtonStyle.Secondary),
+        new ButtonBuilder()
+            .setCustomId('playlist')
+            .setLabel(`${language.buttonPlaylist}`)
+            .setStyle(ButtonStyle.Secondary),
+        new ButtonBuilder()
+            .setCustomId('loop')
+            .setLabel(`${language.buttonLoop}`)
+            .setStyle(ButtonStyle.Secondary),
+        new ButtonBuilder()
+            .setCustomId('nowplaying')
+            .setLabel(`${language.buttonNowPlaying}`)
+            .setStyle(ButtonStyle.Secondary),
+    ]);
+
+    try {
+        musicMsg.edit({ content: language.title, embeds: [embed], components: [row1, row2] });
+    } catch (err) {
+        console.log(err);
+    }
 
     if (!client.twentyFourSeven[player.guild])
         player.destroy();

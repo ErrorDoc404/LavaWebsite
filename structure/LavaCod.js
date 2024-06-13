@@ -11,12 +11,10 @@ const BotStats = require("../mongoose/database/schemas/Stats");
 const { Manager } = require("erela.js");
 const Spotify = require("better-erela.js-spotify").default;
 const { default: AppleMusic } = require("better-erela.js-apple");
-const deezer = require("erela.js-deezer");
-const facebook = require("erela.js-facebook");
 const mongoose = require('mongoose');
 const filters = require("erela.js-filters");
 
-class MusicBot extends Client {
+class LavaCod extends Client {
 
     constructor(
         props = {
@@ -28,10 +26,8 @@ class MusicBot extends Client {
             intents: [
                 GatewayIntentBits.Guilds,
                 GatewayIntentBits.GuildInvites,
-                // GatewayIntentBits.GuildMembers,
                 GatewayIntentBits.GuildVoiceStates,
                 GatewayIntentBits.GuildMessages,
-                // GatewayIntentBits.MessageContent,
             ],
         }
 
@@ -73,10 +69,8 @@ class MusicBot extends Client {
             autoPlay: true,
             // plugins
             plugins: [
-                new deezer(),
                 new AppleMusic(),
                 new Spotify(),
-                new facebook(),
                 new filters(),
             ],
             autoPlay: true,
@@ -178,4 +172,4 @@ class MusicBot extends Client {
 
 }
 
-module.exports = MusicBot;
+module.exports = LavaCod;

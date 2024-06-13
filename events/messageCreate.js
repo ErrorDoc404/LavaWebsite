@@ -7,7 +7,7 @@ module.exports = async (client, message) => {
   if (message.channel.id == MusicDB.musicChannelId) {
     if (message.author.bot) {
       try {
-        setTimeout(() => message.delete().catch(err => { client.error(err) }), 3000);
+        setTimeout(() => message.delete().catch(err => { client.error(err) }), 5000);
       } catch (e) {
         message.channel.send(`Error: ${e}`);
       }
