@@ -11,7 +11,6 @@ module.exports = {
     httpPort: process.env.HTTP_PORT || 'need port',
     httpsPort: process.env.HTTPS_PORT || '443',
     CallbackURL: process.env.CALLBACK_URL || '',
-    express: true,
 
     mongooseURL: process.env.MONGOOSE_URL || "",
 

@@ -61,21 +61,10 @@ class LavaCod extends Client {
 
         //creating Web portal
         this.server = Express();
-        if (this.config.express) {
-            const options = {
-                key: fs.readFileSync(path.resolve(__dirname, '../keys/private.pem')),
-                cert: fs.readFileSync(path.resolve(__dirname, '../keys/cert.pem'))
-            };
-            this.http = https.createServer(options, this.server);
-            this.server.use('/', require('../express'));
-            this.io = new Server(this.http);
-            require('../express/socket')(this.io);
-        } else {
-            this.http = http.createServer(this.server);
-            this.server.use('/', require('../express'));
-            this.io = new Server(this.http);
-            require('../express/socket')(this.io);
-        }
+        this.http = http.createServer(this.server);
+        this.server.use('/', require('../express'));
+        this.io = new Server(this.http);
+        require('../express/socket')(this.io);
 
 
         // Initiate the Manager with some options and listen to some events.

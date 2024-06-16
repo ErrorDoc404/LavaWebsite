@@ -46,8 +46,7 @@ api.use(cors({
 api.use(session({
     secret: 'secret',
     cookie: {
-        maxAge: 60000 * 60 * 1,
-        secure: config.express, // Omit secure flag in development
+        maxAge: 60000 * 60 * 1
     },
     resave: false,
     saveUninitialized: false,
