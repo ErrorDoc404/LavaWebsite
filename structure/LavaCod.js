@@ -2,6 +2,7 @@ const { Client, GatewayIntentBits, Partials, Collection, EmbedBuilder, ActionRow
 const ConfigFetcher = require('../config');
 const { Server } = require("socket.io");
 const http = require("http");
+const https = require("https");
 const fs = require('fs');
 const Express = require("express");
 const Logger = require("./Logger");
@@ -13,6 +14,7 @@ const Spotify = require("better-erela.js-spotify").default;
 const { default: AppleMusic } = require("better-erela.js-apple");
 const mongoose = require('mongoose');
 const filters = require("erela.js-filters");
+const path = require('path');
 
 class LavaCod extends Client {
 
@@ -59,10 +61,22 @@ class LavaCod extends Client {
 
         //creating Web portal
         this.server = Express();
-        this.http = http.createServer(this.server);
-        this.server.use('/', require('../express'));
-        this.io = new Server(this.http);
-        require('../express/socket')(this.io);
+        if (this.config.express) {
+            const options = {
+                key: fs.readFileSync(path.resolve(__dirname, '../keys/private.pem')),
+                cert: fs.readFileSync(path.resolve(__dirname, '../keys/cert.pem'))
+            };
+            this.http = https.createServer(options, this.server);
+            this.server.use('/', require('../express'));
+            this.io = new Server(this.http);
+            require('../express/socket')(this.io);
+        } else {
+            this.http = http.createServer(this.server);
+            this.server.use('/', require('../express'));
+            this.io = new Server(this.http);
+            require('../express/socket')(this.io);
+        }
+
 
         // Initiate the Manager with some options and listen to some events.
         this.manager = new Manager({

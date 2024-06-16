@@ -46,7 +46,8 @@ api.use(cors({
 api.use(session({
     secret: 'secret',
     cookie: {
-        maxAge: 60000 * 60 * 1
+        maxAge: 60000 * 60 * 1,
+        secure: config.express, // Omit secure flag in development
     },
     resave: false,
     saveUninitialized: false,
@@ -61,7 +62,7 @@ api.use(passport.session());
 api.get(config.CallbackURL,
     passport.authenticate("discord", { failureRedirect: "/", }),
     function (req, res) {
-        console.log(req.session);
+        // console.log(req.session);
         const redirectTo = req.session.returnTo || '/dashboard';
         delete req.session.returnTo; // Clear the returnTo value
         res.redirect(redirectTo);
