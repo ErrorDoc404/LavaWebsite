@@ -1,6 +1,6 @@
-const MusicBot = require('./library/MusicBot');
+const LavaCod = require('./structure/LavaCod');
 
-const client = new MusicBot();
+const client = new LavaCod();
 
 client.build();
 

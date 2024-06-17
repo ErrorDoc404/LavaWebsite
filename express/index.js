@@ -61,7 +61,7 @@ api.use(passport.session());
 api.get(config.CallbackURL,
     passport.authenticate("discord", { failureRedirect: "/", }),
     function (req, res) {
-        console.log(req.session);
+        // console.log(req.session);
         const redirectTo = req.session.returnTo || '/dashboard';
         delete req.session.returnTo; // Clear the returnTo value
         res.redirect(redirectTo);

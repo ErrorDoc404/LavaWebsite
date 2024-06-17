@@ -54,4 +54,17 @@ api.get('/guild/cache', async (req, res) => {
     }
 });
 
+api.get('/authUser', async (req, res) => {
+    try {
+        if (req.user) {
+            return res.status(200).send(req.user);
+        } else {
+            return res.status(403).send(false);
+        }
+    } catch (error) {
+        console.error(error);
+        return res.status(500).send('Internal Server Error');
+    }
+});
+
 module.exports = api;
