@@ -1,5 +1,4 @@
 const { PermissionFlagsBits, PermissionsBitField } = require("discord.js");
-const { getVoiceConnection } = require('@discordjs/voice');
 const GuildConfig = require("../../mongoose/database/schemas/GuildConfig");
 
 module.exports = {
@@ -98,7 +97,8 @@ module.exports = {
                 let searchString = args.value;
                 let searched = await client.manager.search(searchString, interaction.user);
 
-                hasVoiceChannel = await interaction.guild.members.me.voice.channel;
+                // Check if bot is in a voice channel
+                let hasVoiceChannel = await interaction.guild.members.me.voice.channel;
                 if (!hasVoiceChannel) return interaction.reply(`❌ | **I don't have enough permissions to join your voice channel!**`).catch(err => { client.error(err); });
 
                 if (searched.loadType === "NO_MATCHES") {
@@ -120,11 +120,11 @@ module.exports = {
                 }
 
                 if (player.queue.length === 1) {
-                    content = `**[ Now Playing ]**\n${player.queue.current.title}.\n**[ ${player.queue.length} Songs in Queue ]**`;
-                    client.musicMessage[interaction.guildId].edit({ content: content });
+                    let content = `**[ Now Playing ]**\n${player.queue.current.title}.\n**[ ${player.queue.length} Songs in Queue ]**`;
+                    await client.musicMessage[interaction.guildId].edit({ content: content });
                 } else if (player.queue.length > 1) {
-                    content = client.musicMessage[interaction.guildId].content.replace(`${player.queue.length - 1} Songs in Queue`, `${player.queue.length} Songs in Queue`);
-                    client.musicMessage[interaction.guildId].edit({ content: content });
+                    let content = client.musicMessage[interaction.guildId].content.replace(`${player.queue.length - 1} Songs in Queue`, `${player.queue.length} Songs in Queue`);
+                    await client.musicMessage[interaction.guildId].edit({ content: content });
                 }
 
                 interaction.reply(`**Music added to queue**`).catch(err => { client.error(err); });
@@ -133,7 +133,6 @@ module.exports = {
             }
         }
     }
-
 };
 
 async function delay(ms) {
