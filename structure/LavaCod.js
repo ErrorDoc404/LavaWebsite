@@ -92,7 +92,7 @@ class LavaCod extends Client {
         this.logger = logger;
 
         this.config.handlers.forEach((handler) => {
-            require(`../handlers/${handler}`)(client);
+            require(`./handlers/${handler}`)(client);
         });
 
     }
@@ -114,11 +114,11 @@ class LavaCod extends Client {
     }
 
     LoadButtons() {
-        fs.readdir('./buttons/', async (err, files) => {
+        fs.readdir('./handlers/buttons/', async (err, files) => {
             if (err) return console.error(err);
             files.forEach(file => {
                 if (!file.endsWith('.js')) return;
-                const button = require(`../buttons/${file}`)
+                const button = require(`../handlers/buttons/${file}`)
                 let btnName = file.split('.')[0];
                 this.Buttons.set(btnName, button);
                 logger.log(`Loaded button '${btnName}'`);
@@ -171,6 +171,15 @@ class LavaCod extends Client {
             const findGuildConfig = await GuildConfig.findOne({ guildId: GuildID });
             res(findGuildConfig);
         });
+    }
+
+    sendEmbed(int, msg, success) {
+        const embed = new EmbedBuilder()
+            .setColor(success ? 0x00ff00 : 0xff0000) // Green for success, red for failure
+            .setDescription(msg);
+
+        // Assuming 'interaction' or 'message' is defined and accessible here
+        int.reply({ embeds: [embed] }).catch(err => { this.error(err); });
     }
 
 }

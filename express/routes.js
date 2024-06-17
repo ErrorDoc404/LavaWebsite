@@ -6,21 +6,21 @@ const { Auth, Administrator } = require("./Middlewares");
 const fs = require("fs");
 
 // Read categories from the commands directory
-const categories = fs.readdirSync(__dirname + '/../commands/');
+const categories = fs.readdirSync(__dirname + '/../handlers/commands/');
 
 let Commands = [];
 
 // Iterate through each category
 categories.filter((cat) => !cat.endsWith('.js')).forEach((cat) => {
   // Read files in the category directory
-  const files = fs.readdirSync(__dirname + `/../commands/${cat}/`).filter((f) =>
+  const files = fs.readdirSync(__dirname + `/../handlers/commands/${cat}/`).filter((f) =>
     f.endsWith('.js')
   );
 
   // Iterate through each file in the category
   files.forEach((file) => {
     // Require the command file
-    let cmd = require(__dirname + `/../commands/${cat}/` + file);
+    let cmd = require(__dirname + `/../handlers/commands/${cat}/` + file);
 
     // Add the command to the Commands array if it has the required properties
     if (!cmd.name || !cmd.description || !cmd.SlashCommand) return;

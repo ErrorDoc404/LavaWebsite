@@ -10,13 +10,13 @@ const path = require("path");
 
 module.exports = (client) => {
     const commands = [];
-    const categories = fs.readdirSync(__dirname + '/../commands/');
+    const categories = fs.readdirSync(__dirname + '/../handlers/commands/');
     categories.filter((cat) => !cat.endsWith('.js')).forEach((cat) => {
-        const files = fs.readdirSync(__dirname + `/../commands/${cat}/`).filter((f) =>
+        const files = fs.readdirSync(__dirname + `/../handlers/commands/${cat}/`).filter((f) =>
             f.endsWith('.js')
         );
         files.forEach(async (file) => {
-            let cmd = require(__dirname + `/../commands/${cat}/` + file);
+            let cmd = require(__dirname + `/../handlers/commands/${cat}/` + file);
             if (!cmd.SlashCommand) return;
             if (!cmd.SlashCommand || !cmd.SlashCommand.run)
                 return client.warn(`Problem for loading ${cmd.name} Slash Command because it didn't found run body`);
