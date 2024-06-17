@@ -75,7 +75,7 @@ module.exports = {
                 embed.addFields(
                     {
                         name: ":robot: Version",
-                        value: `┕\`v${require("../../package.json").version}\``,
+                        value: `┕\`v${require("../../../package.json").version}\``,
                         inline: true,
                     },
                     {

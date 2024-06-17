@@ -45,7 +45,7 @@ module.exports = {
             const guild = client.guilds.cache.get(interaction.guildId);
             const member = guild.members.cache.get(interaction.member.user.id);
             let player = await client.manager.get(interaction.guildId);
-            if (!player) return interaction.reply({ content: `❌ | **Nothing in queue to skip**` }).catch(err => { client.error(err) });
+            if (!player) return interaction.reply({ content: `❌ | **Nothing in queue to play**` }).catch(err => { client.error(err) });
 
             if (!member.voice.channel) return interaction.reply({ content: `❌ | **You must be in a voice channel to use this command.**` }).catch(err => { client.error(err) });
 
