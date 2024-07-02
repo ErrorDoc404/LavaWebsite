@@ -27,7 +27,7 @@ module.exports = async (client, oldState, newState) => {
         if (!countMember) return;
 
         if (countMember === 1 && state === 'old') {
-            var language = require(`../language/${client.language[oldState.guild.id]}`);
+            var language = require(`../../language/${client.language[oldState.guild.id]}.js`);
             if (player && !player.paused && player.queue.current) {
                 player.pause(true);
                 client.musicMessage[oldState.guild.id].channel.send(`Music Have been Pause due to alone in channel`);

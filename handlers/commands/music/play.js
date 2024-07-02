@@ -3,13 +3,11 @@ const GuildConfig = require("../../../mongoose/database/schemas/GuildConfig");
 
 module.exports = {
     name: "play",
-    description: "play music",
-    usage: "",
+    description: "Play music",
     permissions: {
         channel: ["VIEW_CHANNEL", "SEND_MESSAGES", "EMBED_LINKS"],
         member: [],
     },
-    aliases: [],
     category: "music",
     SlashCommand: {
         options: [
@@ -22,7 +20,7 @@ module.exports = {
         ],
         run: async (client, interaction, args, { MusicDB }) => {
             // Check if the bot's setup channel is defined
-            if (MusicDB.musicChannelId === null || MusicDB.musicChannelId === undefined || MusicDB.musicChannelId === '') {
+            if (!MusicDB.musicChannelId) {
                 console.log('MusicDB.musicChannelId is null, undefined, or empty.');
                 return interaction.reply(`Please set up the bot in the channel where you use the **/setup** command.`);
             }
@@ -98,7 +96,7 @@ module.exports = {
                 let searched = await client.manager.search(searchString, interaction.user);
 
                 // Check if bot is in a voice channel
-                let hasVoiceChannel = await interaction.guild.members.me.voice.channel;
+                let hasVoiceChannel = interaction.guild.members.me.voice.channel;
                 if (!hasVoiceChannel) return interaction.reply(`❌ | **I don't have enough permissions to join your voice channel!**`).catch(err => { client.error(err); });
 
                 if (searched.loadType === "NO_MATCHES") {
@@ -129,7 +127,7 @@ module.exports = {
 
                 interaction.reply(`**Music added to queue**`).catch(err => { client.error(err); });
             } catch (e) {
-                interaction.reply(`**No matches found for -** ${searchString} with ${e}`).catch(err => { client.error(err); });
+                interaction.reply(`**No matches found for -** ${args.value} with ${e}`).catch(err => { client.error(err); });
             }
         }
     }

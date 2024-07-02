@@ -9,6 +9,7 @@ module.exports.run = async (client, player, track) => {
     const guildData = await GuildConfig.findOne({ guildId: player.guild });
     const language = require(`../../language/${guildData.language}`);
     const musicMsg = client.musicMessage[player.guild];
+    client.language[player.guild] = guildData.language;
     if (player.queue.length === 0) {
         content = ` ${language.nowPlaying} \n${track.title}.`;
     } else {
@@ -19,7 +20,7 @@ module.exports.run = async (client, player, track) => {
     client.playSong(track.title, player.queue.length);
     client.guildQueue[player.guild] = player.queue.length;
 
-    const thumbnail = track.thumbnail ? track.thumbnail.replace('default', 'hqdefault') : 'https://c.tenor.com/eDVrPUBkx7AAAAAd/anime-sleepy.gif';
+    const thumbnail = track.thumbnail ? track.thumbnail.replace('mqdefault', 'hqdefault') : 'https://c.tenor.com/eDVrPUBkx7AAAAAd/anime-sleepy.gif';
     const msgEmbed = {
         title: track.title,
         color: 0xd43790,
